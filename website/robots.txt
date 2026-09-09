@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aether-cli-sayan9168s-projects.vercel.app/sitemap.xml
