@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — Aether CLI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{aether:{400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',system-ui,sans-serif}</style>
+</head>
+<body class="bg-gray-950 text-gray-100 antialiased">
+  <nav class="border-b border-gray-800/80 backdrop-blur-md bg-gray-950/80 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 font-bold text-xl">✦ Aether CLI</a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="features.html" class="text-gray-400 hover:text-white">Features</a>
+        <a href="docs.html" class="text-gray-400 hover:text-white">Docs</a>
+        <a href="changelog.html" class="text-aether-400">Changelog</a>
+        <a href="https://github.com/sayan9168/aether-cli" class="bg-aether-600 hover:bg-aether-500 text-white px-4 py-2 rounded-lg">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold mb-10">Changelog</h1>
+
+    <div class="space-y-12">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-aether-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">v0.2.0</span>
+          <span class="text-gray-500 text-sm">September 2026</span>
+        </div>
+        <ul class="space-y-2 text-gray-300 text-sm list-disc list-inside">
+          <li>Added session save / load (<code class="text-aether-300">/save</code>, <code class="text-aether-300">/load</code>, <code class="text-aether-300">/sessions</code>)</li>
+          <li>New tool: <code class="text-aether-300">search_files</code> (grep-like code search)</li>
+          <li>New tool: <code class="text-aether-300">get_system_info</code></li>
+          <li>Better Windows & Termux support</li>
+          <li>Improved help and banner</li>
+          <li>Official multi-page website launched</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-gray-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">v0.1.0</span>
+          <span class="text-gray-500 text-sm">September 2026</span>
+        </div>
+        <ul class="space-y-2 text-gray-300 text-sm list-disc list-inside">
+          <li>Initial release</li>
+          <li>Multi-provider support via LiteLLM</li>
+          <li>File tools: read, write, list</li>
+          <li>Shell execution with confirmation</li>
+          <li>Interactive chat with tool calling</li>
+          <li>Rich terminal UI</li>
+          <li>Basic commands: /help, /clear, /model, /tools, /exit</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-gray-800 max-w-6xl mx-auto px-6 py-8 text-sm text-gray-500 text-center">
+    © 2026 Sayan Mahata • MIT License
+  </footer>
+</body>
+</html>

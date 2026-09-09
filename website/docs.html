@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docs — Aether CLI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{aether:{400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',system-ui,sans-serif} pre{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body class="bg-gray-950 text-gray-100 antialiased">
+  <nav class="border-b border-gray-800/80 backdrop-blur-md bg-gray-950/80 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 font-bold text-xl">✦ Aether CLI</a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="features.html" class="text-gray-400 hover:text-white">Features</a>
+        <a href="docs.html" class="text-aether-400">Docs</a>
+        <a href="changelog.html" class="text-gray-400 hover:text-white">Changelog</a>
+        <a href="https://github.com/sayan9168/aether-cli" class="bg-aether-600 hover:bg-aether-500 text-white px-4 py-2 rounded-lg">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold mb-8">Documentation</h1>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Installation</h2>
+      <pre class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-sm overflow-x-auto text-green-400 leading-relaxed">git clone https://github.com/sayan9168/aether-cli.git
+cd aether-cli
+python -m venv .venv
+source .venv/bin/activate   # Linux / macOS / Termux
+# .venv\Scripts\activate    # Windows
+pip install -e .
+cp .env.example .env</pre>
+      <p class="text-gray-400 mt-4 text-sm">Edit <code class="text-aether-300">.env</code> and add at least one API key (OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY, etc.).</p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Usage</h2>
+      <pre class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-sm text-aether-300">aether
+# or
+python -m aether</pre>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Commands</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-gray-400 border-b border-gray-800">
+            <tr><th class="py-3 pr-4">Command</th><th class="py-3">Description</th></tr>
+          </thead>
+          <tbody class="text-gray-300">
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/help</td><td>Show help</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/clear</td><td>Clear conversation</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/model &lt;name&gt;</td><td>Switch model</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/tools</td><td>List tools</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/info</td><td>System info</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/save &lt;name&gt;</td><td>Save session</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/load &lt;name&gt;</td><td>Load session</td></tr>
+            <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/sessions</td><td>List sessions</td></tr>
+            <tr><td class="py-3 pr-4 font-mono text-aether-300">/exit</td><td>Quit</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Termux</h2>
+      <pre class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-sm text-green-400">pkg install python git
+pip install -e .
+aether</pre>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Windows</h2>
+      <p class="text-gray-400 text-sm">Works with PowerShell and CMD. If <code class="text-aether-300">aether</code> is not found, use <code class="text-aether-300">python -m aether</code>.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-gray-800 max-w-6xl mx-auto px-6 py-8 text-sm text-gray-500 text-center">
+    © 2026 Sayan Mahata • MIT License
+  </footer>
+</body>
+</html>
