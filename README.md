@@ -1,139 +1,93 @@
-# Aether CLI
+# Aether CLI by Sayanox
 
-**Advanced AI Coding Assistant** — A powerful terminal-based coding agent inspired by Claude Code.
+**Advanced AI Coding Assistant** — Open-source Claude Code alternative for the terminal.
 
-Works seamlessly on **Windows**, **Linux**, **macOS** and **Termux (Android)**.
+[![GitHub stars](https://img.shields.io/github/stars/sayan9168/aether-cli?style=social)](https://github.com/sayan9168/aether-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-Multi-provider support • Interactive chat • File system tools • Shell execution • Code search • Streaming responses • Beautiful terminal UI
+**Website:** [aether-cli-sayan9168s-projects.vercel.app](https://aether-cli-sayan9168s-projects.vercel.app)  
+**Built by:** [Sayanox](https://sayanox-enterprises-private-limited.vercel.app/) — Sayan Mahata
+
+Works on **Windows**, **Linux**, **macOS** and **Termux (Android)**.
+
+Multi-provider • Interactive chat • File tools • Shell • Code search • Session save • Beautiful UI
+
+---
+
+## Topics (add these on GitHub for better discovery)
+
+```
+ai, cli, coding-assistant, claude-code, terminal, openai, anthropic, grok, xai, termux, python, llm, agent, developer-tools, sayanox
+```
+
+Go to the repo → ⚙️ (About section) → Topics → paste the above.
 
 ---
 
 ## Features
 
-- **Multi-Provider AI**: OpenAI, Anthropic (Claude), xAI (Grok), Google Gemini, DeepSeek, and any OpenAI-compatible API
-- **Interactive Chat Mode**: Natural conversation with the AI about your code
+- **Multi-Provider AI**: OpenAI, Anthropic (Claude), xAI (Grok), Google Gemini, DeepSeek + any OpenAI-compatible API
+- **Interactive Chat**: Natural conversation about your code
 - **File Tools**: Read, write, list directories
-- **Code Search**: Search text across your project (grep-like)
-- **Shell Execution**: Run terminal commands with safety confirmation
-- **System Info**: Detect OS, Termux, Python version etc.
-- **Streaming + Tool Calling**: Full agentic loop
-- **Rich Terminal UI**: Colors, markdown, panels (works on Termux too)
-- **Session Commands**: `/help`, `/clear`, `/model`, `/tools`, `/info`, `/exit`
-- **Cross-platform**: Tested design for Windows CMD/PowerShell and Termux
+- **Code Search**: Grep-like search across the project
+- **Shell Execution**: Run commands with safety confirmation
+- **Session Save/Load**: `/save`, `/load`, `/sessions`
+- **Export Conversation**: `/export` to Markdown
+- **System Info**: `/info`
+- **Rich Terminal UI**: Colors, markdown, panels (works on Termux)
+- **Cross-platform**: Windows, Linux, macOS, Termux
 
 ---
 
-## Installation
-
-### 1. Clone the repository
+## Quick Install
 
 ```bash
 git clone https://github.com/sayan9168/aether-cli.git
 cd aether-cli
-```
-
-### 2. Create a virtual environment (recommended)
-
-```bash
 python -m venv .venv
-
-# Linux / macOS / Termux
-source .venv/bin/activate
-
-# Windows
-.venv\Scripts\activate
-```
-
-### 3. Install
-
-```bash
+source .venv/bin/activate          # Linux / macOS / Termux
+# .venv\Scripts\activate           # Windows
 pip install -e .
-# or
-pip install -r requirements.txt
-```
-
-### 4. Configure API keys
-
-```bash
 cp .env.example .env
-```
-
-Edit `.env` and add at least one key:
-
-```env
-OPENAI_API_KEY=sk-...
-# or
-ANTHROPIC_API_KEY=sk-ant-...
-# or
-XAI_API_KEY=xai-...
-
-AETHER_MODEL=openai/gpt-4o
-```
-
----
-
-## Usage
-
-```bash
+# Add your API key in .env
 aether
-# or
-python -m aether
 ```
-
-### Example
-
-```
-$ aether
-
-✦ Aether CLI — Advanced AI Coding Assistant
-Model: openai/gpt-4o
-
-You > Explain the main function in main.py
-Aether > [reads the file and explains...]
-
-You > /model xai/grok-3
-Switched to xai/grok-3
-
-You > Search for all TODO comments and list them
-```
-
-### Commands
-
-| Command          | Description                     |
-|------------------|---------------------------------|
-| `/help`          | Show help                       |
-| `/clear`         | Clear conversation history      |
-| `/model <name>`  | Switch AI model                 |
-| `/tools`         | List available tools            |
-| `/info`          | Show system information         |
-| `/exit` or `/q`  | Exit                            |
 
 ---
 
-## Termux Notes
+## Commands
 
-Aether works great on Termux:
-
-```bash
-pkg install python git
-pip install -e .
-```
-
-Just make sure you have a good terminal (or Termux:Styling) for the best colors.
+| Command | Description |
+|---------|-------------|
+| `/help` | Show help |
+| `/clear` | Clear conversation |
+| `/model <name>` | Switch model |
+| `/tools` | List tools |
+| `/info` | System info |
+| `/save <name>` | Save session |
+| `/load <name>` | Load session |
+| `/sessions` | List sessions |
+| `/export [file]` | Export chat to Markdown |
+| `/exit` | Quit |
 
 ---
 
-## Windows Notes
+## Supported Models (examples)
 
-Works out of the box on Windows 10/11 with PowerShell or CMD.  
-Use `python -m aether` if the `aether` command is not found in PATH.
+```
+openai/gpt-4o
+anthropic/claude-sonnet-4-20250514
+xai/grok-3
+gemini/gemini-2.0-flash
+```
 
 ---
 
 ## License
 
-MIT License © 2026 Sayan Mahata
+MIT License © 2026 Sayan Mahata (Sayanox)
 
 ---
 
-Built with ❤️ for developers who live in the terminal.
+⭐ **Star this repo** if you find it useful — it helps more developers discover Aether CLI!

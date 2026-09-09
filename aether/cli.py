@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import platform
 import sys
+from datetime import datetime
+from pathlib import Path
 
 import typer
 from rich.markdown import Markdown
@@ -22,14 +24,34 @@ from aether.ui import (
 
 app = typer.Typer(
     name="aether",
-    help="Aether CLI — Advanced AI Coding Assistant",
+    help="Aether CLI — Advanced AI Coding Assistant by Sayanox",
     add_completion=False,
     rich_markup_mode="rich",
 )
 
 
+def _export_markdown(messages: list, path: str | None = None) -> str:
+    """Export conversation to a Markdown file."""
+    if not path:
+        path = f"aether-chat-{datetime.now().strftime('%Y%m%d-%H%M%S')}.md"
+    lines = ["# Aether CLI Conversation\n", f"_Exported: {datetime.now().isoformat()}_\n"]
+    for msg in messages:
+        role = msg.get("role", "unknown")
+        content = msg.get("content") or ""
+        if role == "system":
+            continue
+        if role == "user":
+            lines.append(f"## You\n\n{content}\n")
+        elif role == "assistant":
+            lines.append(f"## Aether\n\n{content}\n")
+        elif role == "tool":
+            lines.append(f"### Tool `{msg.get('name', '')}`\n\n```\n{content[:2000]}\n```\n")
+    text = "\n".join(lines)
+    Path(path).write_text(text, encoding="utf-8")
+    return path
+
+
 def run_interactive() -> None:
-    """Start the interactive chat loop."""
     settings = get_settings()
 
     if not settings.has_any_key():
@@ -132,11 +154,16 @@ def run_interactive() -> None:
                     print_info("No saved sessions yet. Use /save <name>")
                 continue
 
+            elif name == "/export":
+                out = cmd[1] if len(cmd) > 1 else None
+                path = _export_markdown(engine.messages, out)
+                print_success(f"Conversation exported to {path}")
+                continue
+
             else:
                 print_warning(f"Unknown command: {name}. Type /help for help.")
                 continue
 
-        # Normal chat
         console.print()
         with console.status("[bold magenta]Thinking...[/bold magenta]", spinner="dots"):
             response = engine.chat(user_input)
@@ -156,7 +183,7 @@ def main(
         help="Override the default model (e.g. openai/gpt-4o)",
     ),
 ) -> None:
-    """Aether CLI — Advanced AI Coding Assistant."""
+    """Aether CLI — Advanced AI Coding Assistant by Sayanox."""
     if ctx.invoked_subcommand is not None:
         return
 

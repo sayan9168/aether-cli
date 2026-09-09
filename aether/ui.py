@@ -26,7 +26,7 @@ console = Console(theme=custom_theme)
 def print_banner(model: str) -> None:
     title = Text()
     title.append("✦ Aether CLI", style="bold magenta")
-    title.append(" — Advanced AI Coding Assistant", style="dim")
+    title.append(" — by Sayanox", style="dim")
 
     body = Text.from_markup(
         f"[dim]Model:[/dim] [cyan]{model}[/cyan]\n"
@@ -64,6 +64,7 @@ def print_help() -> None:
 | `/save <name>` | Save current conversation |
 | `/load <name>` | Load a saved conversation |
 | `/sessions` | List saved sessions |
+| `/export [file]` | Export chat to Markdown |
 | `/exit` or `/q` | Exit Aether CLI |
 
 **Tips**
@@ -71,5 +72,6 @@ def print_help() -> None:
 - Ask it to read files, write code, search code, or run commands.
 - Shell commands will ask for confirmation before running.
 - Sessions are stored in `~/.aether/sessions/`
+- Built by **Sayanox**
 """
     console.print(Panel(Markdown(help_text), title="Help", border_style="cyan"))
