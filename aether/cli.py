@@ -9,7 +9,7 @@ import typer
 from rich.markdown import Markdown
 
 from aether.chat import ChatEngine
-from aether.config import get_settings
+from aether.config import get_settings, list_sessions, load_session, save_session
 from aether.ui import (
     console,
     print_banner,
@@ -44,7 +44,6 @@ def run_interactive() -> None:
     engine = ChatEngine(settings)
     print_banner(engine.model)
 
-    # Show platform tip for Termux users
     if "termux" in platform.platform().lower() or "com.termux" in str(sys.prefix):
         print_info("Running on Termux — all features are supported.")
 
@@ -59,10 +58,9 @@ def run_interactive() -> None:
         if not user_input:
             continue
 
-        # Handle slash commands
         if user_input.startswith("/"):
-            cmd = user_input.lower().split()
-            name = cmd[0]
+            cmd = user_input.split()
+            name = cmd[0].lower()
 
             if name in ("/exit", "/q", "/quit"):
                 print_info("Goodbye! Happy coding.")
@@ -90,7 +88,6 @@ def run_interactive() -> None:
 
             elif name == "/tools":
                 from aether.tools import get_tools_schema
-
                 tools = get_tools_schema()
                 names = [t["function"]["name"] for t in tools]
                 print_info("Available tools: " + ", ".join(names))
@@ -102,11 +99,44 @@ def run_interactive() -> None:
                 console.print(info)
                 continue
 
+            elif name == "/save":
+                if len(cmd) < 2:
+                    print_warning("Usage: /save <session-name>")
+                else:
+                    path = save_session(cmd[1], engine.messages)
+                    print_success(f"Session saved to {path}")
+                continue
+
+            elif name == "/load":
+                if len(cmd) < 2:
+                    print_warning("Usage: /load <session-name>")
+                    sessions = list_sessions()
+                    if sessions:
+                        print_info("Available sessions: " + ", ".join(sessions))
+                    else:
+                        print_info("No saved sessions found.")
+                else:
+                    data = load_session(cmd[1])
+                    if data is None:
+                        print_error(f"Session '{cmd[1]}' not found.")
+                    else:
+                        engine.messages = data
+                        print_success(f"Loaded session '{cmd[1]}' ({len(data)} messages)")
+                continue
+
+            elif name == "/sessions":
+                sessions = list_sessions()
+                if sessions:
+                    print_info("Saved sessions: " + ", ".join(sessions))
+                else:
+                    print_info("No saved sessions yet. Use /save <name>")
+                continue
+
             else:
                 print_warning(f"Unknown command: {name}. Type /help for help.")
                 continue
 
-        # Normal chat with tools
+        # Normal chat
         console.print()
         with console.status("[bold magenta]Thinking...[/bold magenta]", spinner="dots"):
             response = engine.chat(user_input)

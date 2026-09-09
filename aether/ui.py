@@ -24,7 +24,6 @@ console = Console(theme=custom_theme)
 
 
 def print_banner(model: str) -> None:
-    """Print the startup banner."""
     title = Text()
     title.append("✦ Aether CLI", style="bold magenta")
     title.append(" — Advanced AI Coding Assistant", style="dim")
@@ -37,22 +36,6 @@ def print_banner(model: str) -> None:
     console.print()
     console.print(Panel(body, title=title, border_style="magenta", padding=(1, 2)))
     console.print()
-
-
-def print_user(message: str) -> None:
-    """Print a user message."""
-    console.print(Text("You › ", style="user"), end="")
-    console.print(message)
-
-
-def print_assistant_start() -> None:
-    """Print the assistant prefix before streaming."""
-    console.print(Text("Aether › ", style="assistant"), end="")
-
-
-def print_markdown(text: str) -> None:
-    """Render markdown content."""
-    console.print(Markdown(text))
 
 
 def print_info(message: str) -> None:
@@ -68,7 +51,6 @@ def print_error(message: str) -> None:
     console.print(f"[error]✗ {message}[/error]")
 
 def print_help() -> None:
-    """Print available commands."""
     help_text = """
 **Available Commands**
 
@@ -78,11 +60,16 @@ def print_help() -> None:
 | `/clear` | Clear conversation history |
 | `/model <name>` | Switch the current AI model |
 | `/tools` | List available tools |
+| `/info` | Show system information |
+| `/save <name>` | Save current conversation |
+| `/load <name>` | Load a saved conversation |
+| `/sessions` | List saved sessions |
 | `/exit` or `/q` | Exit Aether CLI |
 
 **Tips**
 - Just type normally to chat with the AI.
-- Ask it to read files, write code, or run commands.
+- Ask it to read files, write code, search code, or run commands.
 - Shell commands will ask for confirmation before running.
+- Sessions are stored in `~/.aether/sessions/`
 """
     console.print(Panel(Markdown(help_text), title="Help", border_style="cyan"))

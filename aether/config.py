@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from typing import Optional
@@ -12,6 +13,14 @@ from pydantic import BaseModel, Field
 # Load .env from current working directory or project root
 load_dotenv()
 load_dotenv(Path.cwd() / ".env")
+
+CONFIG_DIR = Path.home() / ".aether"
+SESSIONS_DIR = CONFIG_DIR / "sessions"
+
+
+def ensure_dirs() -> None:
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class Settings(BaseModel):
@@ -32,14 +41,14 @@ class Settings(BaseModel):
             (
                 "You are Aether, an expert AI coding assistant running inside a terminal. "
                 "You help developers write, understand, refactor, and debug code. "
-                "You have access to tools for reading/writing files and running shell commands. "
+                "You have access to tools for reading/writing files, searching code, and running shell commands. "
                 "Be concise, accurate, and practical. When suggesting code changes, show clear diffs or full files. "
-                "Always prioritize safety: never run destructive commands without clear user intent."
+                "Always prioritize safety: never run destructive commands without clear user intent. "
+                "You work on Windows, Linux, macOS and Termux."
             ),
         )
     )
 
-    # API keys (LiteLLM reads them from environment automatically)
     openai_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
     anthropic_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("ANTHROPIC_API_KEY"))
     xai_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("XAI_API_KEY"))
@@ -47,7 +56,6 @@ class Settings(BaseModel):
     deepseek_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("DEEPSEEK_API_KEY"))
 
     def has_any_key(self) -> bool:
-        """Return True if at least one API key is configured."""
         return any(
             [
                 self.openai_api_key,
@@ -60,5 +68,28 @@ class Settings(BaseModel):
 
 
 def get_settings() -> Settings:
-    """Return a Settings instance."""
+    ensure_dirs()
     return Settings()
+
+
+def save_session(name: str, messages: list) -> str:
+    """Save conversation to ~/.aether/sessions/<name>.json"""
+    ensure_dirs()
+    path = SESSIONS_DIR / f"{name}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(messages, f, indent=2, ensure_ascii=False)
+    return str(path)
+
+
+def load_session(name: str) -> list | None:
+    """Load conversation from ~/.aether/sessions/<name>.json"""
+    path = SESSIONS_DIR / f"{name}.json"
+    if not path.exists():
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def list_sessions() -> list[str]:
+    ensure_dirs()
+    return sorted([p.stem for p in SESSIONS_DIR.glob("*.json")])
