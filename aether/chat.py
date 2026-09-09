@@ -1,16 +1,15 @@
-"""Chat engine with streaming and tool calling support."""
+"""Chat engine with tool calling support."""
 
 from __future__ import annotations
 
 import json
 from typing import Any, Generator
 
-import litellm
 from litellm import completion
 
 from aether.config import Settings
 from aether.tools import execute_tool, get_tools_schema
-from aether.ui import console, print_assistant_start, print_error, print_info
+from aether.ui import print_error, print_info
 
 
 class ChatEngine:
@@ -24,17 +23,13 @@ class ChatEngine:
         self.model = settings.model
 
     def clear_history(self) -> None:
-        """Reset conversation while keeping the system prompt."""
         self.messages = [{"role": "system", "content": self.settings.system_prompt}]
 
     def set_model(self, model: str) -> None:
-        self.model = model
+        self.model = model.strip()
 
     def chat(self, user_input: str) -> str:
-        """
-        Send a user message and return the final assistant response.
-        Handles tool calls in a loop until the model produces a final answer.
-        """
+        """Send a user message and return the final assistant response."""
         self.messages.append({"role": "user", "content": user_input})
 
         max_tool_rounds = 8
@@ -51,12 +46,14 @@ class ChatEngine:
                 )
             except Exception as e:
                 print_error(f"LLM error: {e}")
+                # Remove the last user message so they can retry cleanly
+                if self.messages and self.messages[-1].get("role") == "user":
+                    self.messages.pop()
                 return f"Error communicating with the model: {e}"
 
             message = response.choices[0].message
-            tool_calls = getattr(message, "tool_calls", None)
+            tool_calls = getattr(message, "tool_calls", None) or []
 
-            # Convert message to dict for history
             msg_dict: dict[str, Any] = {
                 "role": "assistant",
                 "content": message.content or "",
@@ -68,7 +65,7 @@ class ChatEngine:
                         "type": "function",
                         "function": {
                             "name": tc.function.name,
-                            "arguments": tc.function.arguments,
+                            "arguments": tc.function.arguments or "{}",
                         },
                     }
                     for tc in tool_calls
@@ -77,10 +74,8 @@ class ChatEngine:
             self.messages.append(msg_dict)
 
             if not tool_calls:
-                # Final response
-                return message.content or ""
+                return message.content or "(empty response)"
 
-            # Execute tools
             for tc in tool_calls:
                 name = tc.function.name
                 try:
@@ -96,17 +91,14 @@ class ChatEngine:
                         "role": "tool",
                         "tool_call_id": tc.id,
                         "name": name,
-                        "content": result,
+                        "content": str(result)[:50_000],
                     }
                 )
 
         return "Reached maximum tool call rounds. Stopping."
 
     def stream_chat(self, user_input: str) -> Generator[str, None, None]:
-        """
-        Stream a simple response (no tools) for better UX on pure chat.
-        For full tool support we use the non-streaming path above.
-        """
+        """Stream a simple response (no tools)."""
         self.messages.append({"role": "user", "content": user_input})
 
         try:
@@ -121,7 +113,7 @@ class ChatEngine:
             full_content = ""
             for chunk in response:
                 delta = chunk.choices[0].delta
-                if delta and delta.content:
+                if delta and getattr(delta, "content", None):
                     full_content += delta.content
                     yield delta.content
 

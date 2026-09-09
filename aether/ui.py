@@ -41,14 +41,18 @@ def print_banner(model: str) -> None:
 def print_info(message: str) -> None:
     console.print(f"[info]ℹ {message}[/info]")
 
+
 def print_success(message: str) -> None:
     console.print(f"[success]✓ {message}[/success]")
+
 
 def print_warning(message: str) -> None:
     console.print(f"[warning]⚠ {message}[/warning]")
 
+
 def print_error(message: str) -> None:
     console.print(f"[error]✗ {message}[/error]")
+
 
 def print_help() -> None:
     help_text = """
@@ -56,11 +60,12 @@ def print_help() -> None:
 
 | Command | Description |
 |---------|-------------|
-| `/help` | Show this help message |
+| `/help` | Show this help |
 | `/clear` | Clear conversation history |
-| `/model <name>` | Switch the current AI model |
+| `/model <name>` | Switch AI model |
 | `/tools` | List available tools |
-| `/info` | Show system information |
+| `/info` | System information |
+| `/pwd` | Print working directory |
 | `/save <name>` | Save current conversation |
 | `/load <name>` | Load a saved conversation |
 | `/sessions` | List saved sessions |
@@ -68,9 +73,9 @@ def print_help() -> None:
 | `/exit` or `/q` | Exit Aether CLI |
 
 **Tips**
-- Just type normally to chat with the AI.
+- Type normally to chat with the AI.
 - Ask it to read files, write code, search code, or run commands.
-- Shell commands will ask for confirmation before running.
+- Shell commands ask for confirmation before running.
 - Sessions are stored in `~/.aether/sessions/`
 - Built by **Sayanox**
 """

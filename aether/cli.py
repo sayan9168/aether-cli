@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import platform
 import sys
 from datetime import datetime
@@ -31,10 +32,13 @@ app = typer.Typer(
 
 
 def _export_markdown(messages: list, path: str | None = None) -> str:
-    """Export conversation to a Markdown file."""
     if not path:
         path = f"aether-chat-{datetime.now().strftime('%Y%m%d-%H%M%S')}.md"
-    lines = ["# Aether CLI Conversation\n", f"_Exported: {datetime.now().isoformat()}_\n"]
+    lines = [
+        "# Aether CLI Conversation\n",
+        f"_Exported: {datetime.now().isoformat()}_\n",
+        f"_Built by Sayanox_\n",
+    ]
     for msg in messages:
         role = msg.get("role", "unknown")
         content = msg.get("content") or ""
@@ -45,7 +49,8 @@ def _export_markdown(messages: list, path: str | None = None) -> str:
         elif role == "assistant":
             lines.append(f"## Aether\n\n{content}\n")
         elif role == "tool":
-            lines.append(f"### Tool `{msg.get('name', '')}`\n\n```\n{content[:2000]}\n```\n")
+            name = msg.get("name", "tool")
+            lines.append(f"### Tool `{name}`\n\n```\n{str(content)[:2000]}\n```\n")
     text = "\n".join(lines)
     Path(path).write_text(text, encoding="utf-8")
     return path
@@ -58,7 +63,7 @@ def run_interactive() -> None:
         print_error("No API key found.")
         console.print(
             "Please set at least one key in your [cyan].env[/cyan] file:\n"
-            "  OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY, GOOGLE_API_KEY, etc.\n"
+            "  OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY, GOOGLE_API_KEY\n"
             "See [cyan].env.example[/cyan] for details."
         )
         raise typer.Exit(code=1)
@@ -87,16 +92,13 @@ def run_interactive() -> None:
             if name in ("/exit", "/q", "/quit"):
                 print_info("Goodbye! Happy coding.")
                 break
-
             elif name == "/help":
                 print_help()
                 continue
-
             elif name == "/clear":
                 engine.clear_history()
                 print_success("Conversation history cleared.")
                 continue
-
             elif name == "/model":
                 if len(cmd) < 2:
                     print_warning("Usage: /model <model-name>")
@@ -107,20 +109,21 @@ def run_interactive() -> None:
                     engine.set_model(new_model)
                     print_success(f"Switched to {new_model}")
                 continue
-
             elif name == "/tools":
                 from aether.tools import get_tools_schema
+
                 tools = get_tools_schema()
                 names = [t["function"]["name"] for t in tools]
                 print_info("Available tools: " + ", ".join(names))
                 continue
-
             elif name == "/info":
                 from aether.tools import execute_tool
-                info = execute_tool("get_system_info", {})
-                console.print(info)
-                continue
 
+                console.print(execute_tool("get_system_info", {}))
+                continue
+            elif name == "/pwd":
+                print_info(os.getcwd())
+                continue
             elif name == "/save":
                 if len(cmd) < 2:
                     print_warning("Usage: /save <session-name>")
@@ -128,7 +131,6 @@ def run_interactive() -> None:
                     path = save_session(cmd[1], engine.messages)
                     print_success(f"Session saved to {path}")
                 continue
-
             elif name == "/load":
                 if len(cmd) < 2:
                     print_warning("Usage: /load <session-name>")
@@ -145,7 +147,6 @@ def run_interactive() -> None:
                         engine.messages = data
                         print_success(f"Loaded session '{cmd[1]}' ({len(data)} messages)")
                 continue
-
             elif name == "/sessions":
                 sessions = list_sessions()
                 if sessions:
@@ -153,13 +154,11 @@ def run_interactive() -> None:
                 else:
                     print_info("No saved sessions yet. Use /save <name>")
                 continue
-
             elif name == "/export":
                 out = cmd[1] if len(cmd) > 1 else None
                 path = _export_markdown(engine.messages, out)
                 print_success(f"Conversation exported to {path}")
                 continue
-
             else:
                 print_warning(f"Unknown command: {name}. Type /help for help.")
                 continue
@@ -179,7 +178,8 @@ def main(
     ctx: typer.Context,
     model: str = typer.Option(
         None,
-        "--model", "-m",
+        "--model",
+        "-m",
         help="Override the default model (e.g. openai/gpt-4o)",
     ),
 ) -> None:
