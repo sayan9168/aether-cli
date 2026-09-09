@@ -2,7 +2,9 @@
 
 **Advanced AI Coding Assistant** — A powerful terminal-based coding agent inspired by Claude Code.
 
-Multi-provider support • Interactive chat • File system tools • Shell execution • Streaming responses • Beautiful terminal UI
+Works seamlessly on **Windows**, **Linux**, **macOS** and **Termux (Android)**.
+
+Multi-provider support • Interactive chat • File system tools • Shell execution • Code search • Streaming responses • Beautiful terminal UI
 
 ---
 
@@ -10,12 +12,14 @@ Multi-provider support • Interactive chat • File system tools • Shell exec
 
 - **Multi-Provider AI**: OpenAI, Anthropic (Claude), xAI (Grok), Google Gemini, DeepSeek, and any OpenAI-compatible API
 - **Interactive Chat Mode**: Natural conversation with the AI about your code
-- **File Tools**: Read, write, list, and search files in your project
-- **Shell Execution**: Run terminal commands with confirmation (safe by default)
-- **Streaming Responses**: Real-time token streaming for better UX
-- **Rich Terminal UI**: Colors, markdown rendering, panels, and progress indicators
-- **Session Commands**: `/help`, `/clear`, `/model`, `/tools`, `/exit`
-- **Configurable**: Easy setup via `.env` file
+- **File Tools**: Read, write, list directories
+- **Code Search**: Search text across your project (grep-like)
+- **Shell Execution**: Run terminal commands with safety confirmation
+- **System Info**: Detect OS, Termux, Python version etc.
+- **Streaming + Tool Calling**: Full agentic loop
+- **Rich Terminal UI**: Colors, markdown, panels (works on Termux too)
+- **Session Commands**: `/help`, `/clear`, `/model`, `/tools`, `/info`, `/exit`
+- **Cross-platform**: Tested design for Windows CMD/PowerShell and Termux
 
 ---
 
@@ -32,12 +36,15 @@ cd aether-cli
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # Linux / macOS
-# or
-.venv\Scripts\activate      # Windows
+
+# Linux / macOS / Termux
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
 ```
 
-### 3. Install dependencies
+### 3. Install
 
 ```bash
 pip install -e .
@@ -51,27 +58,21 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Edit `.env` and add your API keys:
+Edit `.env` and add at least one key:
 
 ```env
-# At least one is required
 OPENAI_API_KEY=sk-...
+# or
 ANTHROPIC_API_KEY=sk-ant-...
+# or
 XAI_API_KEY=xai-...
-GOOGLE_API_KEY=...
 
-# Default model (examples below)
 AETHER_MODEL=openai/gpt-4o
-# AETHER_MODEL=anthropic/claude-sonnet-4-20250514
-# AETHER_MODEL=xai/grok-3
-# AETHER_MODEL=gemini/gemini-2.0-flash
 ```
 
 ---
 
 ## Usage
-
-Start the interactive CLI:
 
 ```bash
 aether
@@ -79,7 +80,7 @@ aether
 python -m aether
 ```
 
-### Example session
+### Example
 
 ```
 $ aether
@@ -88,67 +89,44 @@ $ aether
 Model: openai/gpt-4o
 
 You > Explain the main function in main.py
-
 Aether > [reads the file and explains...]
 
-You > /model anthropic/claude-sonnet-4-20250514
-Switched to anthropic/claude-sonnet-4-20250514
+You > /model xai/grok-3
+Switched to xai/grok-3
 
-You > Refactor this function to be more efficient
-
-Aether > [proposes code changes...]
+You > Search for all TODO comments and list them
 ```
 
-### Available Commands
+### Commands
 
-| Command          | Description                          |
-|------------------|--------------------------------------|
-| `/help`          | Show help message                    |
-| `/clear`         | Clear conversation history           |
-| `/model <name>`  | Switch AI model                      |
-| `/tools`         | List available tools                 |
-| `/exit` or `/q`  | Exit the CLI                         |
+| Command          | Description                     |
+|------------------|---------------------------------|
+| `/help`          | Show help                       |
+| `/clear`         | Clear conversation history      |
+| `/model <name>`  | Switch AI model                 |
+| `/tools`         | List available tools            |
+| `/info`          | Show system information         |
+| `/exit` or `/q`  | Exit                            |
 
 ---
 
-## Supported Models (via LiteLLM)
+## Termux Notes
 
-- `openai/gpt-4o`, `openai/gpt-4o-mini`, `openai/o1`, etc.
-- `anthropic/claude-sonnet-4-20250514`, `anthropic/claude-opus-4-...`
-- `xai/grok-3`, `xai/grok-2`
-- `gemini/gemini-2.0-flash`, `gemini/gemini-1.5-pro`
-- Any OpenAI-compatible endpoint
+Aether works great on Termux:
 
-See [LiteLLM providers](https://docs.litellm.ai/docs/providers) for the full list.
+```bash
+pkg install python git
+pip install -e .
+```
+
+Just make sure you have a good terminal (or Termux:Styling) for the best colors.
 
 ---
 
-## Project Structure
+## Windows Notes
 
-```
-aether-cli/
-├── aether/
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── cli.py          # Main CLI entry + interactive loop
-│   ├── config.py       # Configuration & environment
-│   ├── chat.py         # Chat engine + streaming
-│   ├── tools.py        # File & shell tools
-│   └── ui.py           # Rich terminal UI helpers
-├── .env.example
-├── pyproject.toml
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
-
----
-
-## Safety Notes
-
-- Shell commands require explicit confirmation before execution.
-- The tool only operates inside the current working directory by default.
-- Never share your API keys. Keep `.env` out of version control.
+Works out of the box on Windows 10/11 with PowerShell or CMD.  
+Use `python -m aether` if the `aether` command is not found in PATH.
 
 ---
 

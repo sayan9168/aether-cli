@@ -1,6 +1,9 @@
-"""Main CLI entrypoint for Aether."""
+"""Main CLI entrypoint for Aether. Works on Windows, Linux, macOS and Termux."""
 
 from __future__ import annotations
+
+import platform
+import sys
 
 import typer
 from rich.markdown import Markdown
@@ -41,12 +44,16 @@ def run_interactive() -> None:
     engine = ChatEngine(settings)
     print_banner(engine.model)
 
+    # Show platform tip for Termux users
+    if "termux" in platform.platform().lower() or "com.termux" in str(sys.prefix):
+        print_info("Running on Termux — all features are supported.")
+
     while True:
         try:
             user_input = console.input("[bold blue]You › [/bold blue]").strip()
         except (KeyboardInterrupt, EOFError):
             console.print()
-            print_info("Goodbye!")
+            print_info("Goodbye! Happy coding.")
             break
 
         if not user_input:
@@ -58,7 +65,7 @@ def run_interactive() -> None:
             name = cmd[0]
 
             if name in ("/exit", "/q", "/quit"):
-                print_info("Goodbye!")
+                print_info("Goodbye! Happy coding.")
                 break
 
             elif name == "/help":
@@ -74,8 +81,9 @@ def run_interactive() -> None:
                 if len(cmd) < 2:
                     print_warning("Usage: /model <model-name>")
                     print_info(f"Current model: {engine.model}")
+                    print_info("Examples: openai/gpt-4o | anthropic/claude-sonnet-4-20250514 | xai/grok-3")
                 else:
-                    new_model = cmd[1]
+                    new_model = " ".join(cmd[1:])
                     engine.set_model(new_model)
                     print_success(f"Switched to {new_model}")
                 continue
@@ -86,6 +94,12 @@ def run_interactive() -> None:
                 tools = get_tools_schema()
                 names = [t["function"]["name"] for t in tools]
                 print_info("Available tools: " + ", ".join(names))
+                continue
+
+            elif name == "/info":
+                from aether.tools import execute_tool
+                info = execute_tool("get_system_info", {})
+                console.print(info)
                 continue
 
             else:
