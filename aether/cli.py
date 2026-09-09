@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import sys
-
 import typer
 from rich.markdown import Markdown
 
@@ -94,16 +92,13 @@ def run_interactive() -> None:
                 print_warning(f"Unknown command: {name}. Type /help for help.")
                 continue
 
-        # Normal chat
+        # Normal chat with tools
         console.print()
-        console.print("[bold magenta]Aether › [/bold magenta]", end="")
+        with console.status("[bold magenta]Thinking...[/bold magenta]", spinner="dots"):
+            response = engine.chat(user_input)
 
-        # We use the full tool-enabled chat path
-        response = engine.chat(user_input)
-
-        # Render the response as markdown for nice formatting
         if response:
-            console.print()
+            console.print("[bold magenta]Aether › [/bold magenta]")
             console.print(Markdown(response))
         console.print()
 
