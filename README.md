@@ -17,10 +17,6 @@ Multi-provider • Interactive chat • File tools • Shell • Code search •
 
 ## Topics (add these on GitHub for better discovery)
 
-```
-ai, cli, coding-assistant, claude-code, terminal, openai, anthropic, grok, xai, termux, python, llm, agent, developer-tools, sayanox
-```
-
 Go to the repo → ⚙️ (About section) → Topics → paste the above.
 
 ---
