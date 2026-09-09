@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Docs — Aether CLI</title>
+  <title>Docs — Aether CLI by Sayanox | Installation & Usage Guide</title>
+  <meta name="description" content="Complete documentation for Aether CLI by Sayanox. Installation on Windows, Linux, macOS and Termux. Commands, API setup and more." />
+  <meta name="author" content="Sayan Mahata | Sayanox" />
+  <meta name="robots" content="index, follow" />
+  <meta name="google-site-verification" content="uyb7Y9wXsprQjKNrrv9c71J_s-F7AOYX7fBlZJFEY5c" />
+  <link rel="canonical" href="https://aether-cli-sayan9168s-projects.vercel.app/docs.html" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={theme:{extend:{colors:{aether:{400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed'}}}}}</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -17,13 +22,14 @@
         <a href="features.html" class="text-gray-400 hover:text-white">Features</a>
         <a href="docs.html" class="text-aether-400">Docs</a>
         <a href="changelog.html" class="text-gray-400 hover:text-white">Changelog</a>
-        <a href="https://github.com/sayan9168/aether-cli" class="bg-aether-600 hover:bg-aether-500 text-white px-4 py-2 rounded-lg">GitHub</a>
+        <a href="https://github.com/sayan9168/aether-cli" class="bg-aether-600 hover:bg-aether-500 text-white px-4 py-2 rounded-lg">⭐ GitHub</a>
       </div>
     </div>
   </nav>
 
   <main class="max-w-3xl mx-auto px-6 py-16">
-    <h1 class="text-4xl font-bold mb-8">Documentation</h1>
+    <h1 class="text-4xl font-bold mb-2">Documentation</h1>
+    <p class="text-gray-500 mb-10">Aether CLI by <strong class="text-aether-400">Sayanox</strong></p>
 
     <section class="mb-12">
       <h2 class="text-2xl font-semibold mb-4 text-aether-400">Installation</h2>
@@ -34,7 +40,7 @@ source .venv/bin/activate   # Linux / macOS / Termux
 # .venv\Scripts\activate    # Windows
 pip install -e .
 cp .env.example .env</pre>
-      <p class="text-gray-400 mt-4 text-sm">Edit <code class="text-aether-300">.env</code> and add at least one API key (OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY, etc.).</p>
+      <p class="text-gray-400 mt-4 text-sm">Edit <code class="text-aether-300">.env</code> and add at least one API key (OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY...).</p>
     </section>
 
     <section class="mb-12">
@@ -48,9 +54,7 @@ python -m aether</pre>
       <h2 class="text-2xl font-semibold mb-4 text-aether-400">Commands</h2>
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
-          <thead class="text-gray-400 border-b border-gray-800">
-            <tr><th class="py-3 pr-4">Command</th><th class="py-3">Description</th></tr>
-          </thead>
+          <thead class="text-gray-400 border-b border-gray-800"><tr><th class="py-3 pr-4">Command</th><th class="py-3">Description</th></tr></thead>
           <tbody class="text-gray-300">
             <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/help</td><td>Show help</td></tr>
             <tr class="border-b border-gray-800/50"><td class="py-3 pr-4 font-mono text-aether-300">/clear</td><td>Clear conversation</td></tr>
@@ -67,7 +71,7 @@ python -m aether</pre>
     </section>
 
     <section class="mb-12">
-      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Termux</h2>
+      <h2 class="text-2xl font-semibold mb-4 text-aether-400">Termux (Android)</h2>
       <pre class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-sm text-green-400">pkg install python git
 pip install -e .
 aether</pre>
@@ -80,7 +84,7 @@ aether</pre>
   </main>
 
   <footer class="border-t border-gray-800 max-w-6xl mx-auto px-6 py-8 text-sm text-gray-500 text-center">
-    © 2026 Sayan Mahata • MIT License
+    © 2026 <strong class="text-gray-300">Sayanox</strong> — Sayan Mahata • MIT License
   </footer>
 </body>
 </html>
